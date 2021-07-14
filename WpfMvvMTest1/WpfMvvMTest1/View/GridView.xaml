@@ -1,0 +1,256 @@
+﻿<Window
+    x:Class="WpfMvvMTest1.View.GridView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WpfMvvMTest1.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:vm="clr-namespace:WpfMvvMTest1.ViewModel"
+    Title="GridView"
+    Width="499.385"
+    Height="450"
+    MaxWidth="500"
+    MaxHeight="500"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary>
+
+            <!--<CollectionViewSource
+                Source="{Binding ListReviewEpisode}"
+                x:Key="cvsReviewEpisode">
+            </CollectionViewSource>-->
+
+
+            <Style
+                x:Key="btnMistakeStyle"
+                BasedOn="{StaticResource MetroButton}"
+                TargetType="{x:Type Button}">
+                <Setter Property="Width" Value="90" />
+                <Setter Property="Height" Value="55" />
+                <Setter Property="Margin" Value="5" />
+            </Style>
+
+            <Style
+                x:Key="btnAddPanelStyle"
+                BasedOn="{StaticResource MetroButton}"
+                TargetType="{x:Type Button}">
+                <Setter Property="Width" Value="80" />
+                <Setter Property="Height" Value="50" />
+                <Setter Property="Margin" Value="5" />
+            </Style>
+
+            <Style x:Key="btnNameMistakeStyle" TargetType="{x:Type TextBlock}">
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="TextAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="tbMarkerPropsStyle" TargetType="{x:Type TextBlock}">
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+
+            <Style x:Key="tbMarkerPropsStyle71" TargetType="{x:Type TextBlock}">
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Background" Value="LightBlue" />
+            </Style>
+
+            <!--<Style x:Key="lbTimeBoxStyle" TargetType="{x:Type Label}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsEndCheckTime}" Value="true">
+                        <Setter Property="Background" Value="Red"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>-->
+
+            <Style x:Key="gvMarkersStyle" TargetType="{x:Type ListViewItem}">
+                <EventSetter Event="MouseDoubleClick" Handler="GridMouseDoubleClick"/>
+                <EventSetter Event="PreviewMouseDown" Handler="GridView_MouseDown"/>
+
+            </Style>
+
+
+            <CollectionViewSource
+                x:Key="cvs"
+                IsLiveFilteringRequested="True"
+                Source="{Binding ListViewMarkers}">
+
+                <CollectionViewSource.SortDescriptions>
+                    <scm:SortDescription Direction="Descending" PropertyName="Id" />
+                    <scm:SortDescription Direction="Descending" PropertyName="TimeVideo" />
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+
+            <Style x:Key="tbStrikeoutStyle" TargetType="{x:Type TextBlock}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding FlagDel}" Value="true">
+                        <Setter Property="TextDecorations" Value="Strikethrough" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="gvEpisodesStyle" TargetType="{x:Type ListViewItem}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsReviewedByUser}" Value="true">
+                        <Setter Property="Foreground" Value="Gray" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <ControlTemplate x:Key="Slider" TargetType="{x:Type Slider}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="8" />
+                        <RowDefinition Height="12" MinHeight="{TemplateBinding MinHeight}" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TickBar
+                        x:Name="TopTick"
+                        Grid.Row="0"
+                        Height="5"
+                        VerticalAlignment="Top"
+                        Fill="LightGray"
+                        Placement="Top"
+                        SnapsToDevicePixels="True"
+                        Visibility="Hidden" />
+                    <!--<Border BorderBrush="LightGray"  BorderThickness="0,0,0,1" ></Border>-->
+                    <Border
+                        x:Name="TrackBackground"
+                        Grid.Row="1"
+                        Height="8"
+                        Margin="0,-9,0,0"
+                        VerticalAlignment="Center"
+                        Background="LightGray"
+                        BorderBrush="LightGray"
+                        BorderThickness="1" />
+                    <Track
+                        x:Name="PART_Track"
+                        Grid.Row="1"
+                        Margin="0,-10,0,0">
+                        <!--<Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton1}"  Command="Slider.DecreaseLarge" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource SliderThumb}" Margin="-5,0,0,0" />
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton}" Command="Slider.IncreaseLarge" />
+                    </Track.IncreaseRepeatButton>-->
+                    </Track>
+                    <!--<TextBlock Text="0" Grid.Row="1" Margin="0,15,0,0"></TextBlock>-->
+                    <TickBar
+                        x:Name="BottomTick"
+                        Grid.Row="2"
+                        Height="4"
+                        Fill="LightGray"
+                        Placement="Bottom"
+                        SnapsToDevicePixels="True"
+                        Visibility="Collapsed" />
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="TickPlacement" Value="TopLeft">
+                        <Setter TargetName="TopTick" Property="Visibility" Value="Visible" />
+                    </Trigger>
+                    <Trigger Property="TickPlacement" Value="BottomRight">
+                        <Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
+                    </Trigger>
+                    <Trigger Property="TickPlacement" Value="Both">
+                        <Setter TargetName="TopTick" Property="Visibility" Value="Visible" />
+                        <Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+
+            <Style x:Key="Horizontal_Slider" TargetType="{x:Type Slider}">
+                <Setter Property="Focusable" Value="False" />
+                <Setter Property="SnapsToDevicePixels" Value="true" />
+                <Setter Property="OverridesDefaultStyle" Value="true" />
+                <Style.Triggers>
+                    <Trigger Property="Orientation" Value="Horizontal">
+                        <Setter Property="MinHeight" Value="10" />
+                        <Setter Property="MinWidth" Value="104" />
+                        <Setter Property="Template" Value="{StaticResource Slider}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="statusBarStyle" TargetType="{x:Type StatusBar}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsErrorStatus}" Value="true">
+                        <Setter Property="Background" Value="Red" />
+                        <Setter Property="Foreground" Value="White" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Canvas>
+        <StackPanel Orientation="Horizontal"/>
+        <Label
+            FontSize="20"
+            Content="{Binding Num}" Canvas.Left="343" Canvas.Top="201" />
+        <ListView
+            Height="320"
+            x:Name="dataGridView1"
+            Canvas.Top="10"
+            BorderThickness="0"
+            ItemContainerStyle="{StaticResource gvMarkersStyle}"
+            ItemsSource="{Binding Source={StaticResource cvs}}"
+            SelectedItem="{Binding SelectedMarker}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="70" Header="ID">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Width="auto"
+                                    Height="auto"
+                                    Style="{StaticResource tbStrikeoutStyle}"
+                                    Text="{Binding Id}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Width="70" Header="Name">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Width="auto"
+                                    Height="auto"
+                                    Style="{StaticResource tbStrikeoutStyle}"
+                                    Text="{Binding Name}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Width="70" Header="SurName">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Width="auto"
+                                    Height="auto"
+                                    Style="{StaticResource tbStrikeoutStyle}"
+                                    Text="{Binding Surname}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="100" Header="Time">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Width="auto"
+                                    Height="auto"
+                                    Style="{StaticResource tbStrikeoutStyle}"
+                                    Text="{Binding TimeVideo}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Command="{Binding AddNew}" Width="200" Canvas.Left="23" Canvas.Top="372">Add</Button>
+        <Button Command="{Binding Remove}" Width="200" Canvas.Left="264" Canvas.Top="372">Remove</Button>
+
+    </Canvas>
+</Window>
