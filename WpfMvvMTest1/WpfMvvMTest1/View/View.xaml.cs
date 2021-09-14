@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfMvvMTest1.Test;
 
 namespace WpfMvvMTest1.View
 {
@@ -22,6 +23,23 @@ namespace WpfMvvMTest1.View
         public View()
         {
             InitializeComponent();
+            r(new test1());
+            r(new test1());
+
+        }
+
+        //public IEnumerable<string> test
+        //{
+        //    get
+        //    {
+        //        return  IEnumerable<string>() {"1", "2"};
+        //    }
+        //}
+
+        public ITest r(ITest x)
+        {
+            x.run();
+            return new test1();
         }
     }
 }

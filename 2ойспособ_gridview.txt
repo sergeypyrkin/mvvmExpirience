@@ -1,0 +1,63 @@
+можно создать DataContex in code (GridView.cs)
+            gv = new GridViewViewModel(number);
+            this.DataContext = gv;
+
+также удобно часть комманд передавать там же, которые на 
+
+        private void GridMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            gv.Command_GridView_MouseDoubleDown.Execute(new object[] { sender, e });
+        }
+
+
+        private void GridView_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            gv.CommandGridView_MouseDown.Execute(new object[] { sender, e });
+        }
+
+GridViewViewModel.cs
+кстати заметьте что тут используется GalaSoft.MvvmLight в котором уже есть часть базовый реализаций типа ViewModelBase
+
+    public class GridViewViewModel: ViewModelBase
+    {
+
+        public ObservableCollection<Marker> ListViewMarkers { get; set; } = new ObservableCollection<Marker>();
+
+        private RelayCommand _Command_GridView_MouseDoubleDown;
+
+        public RelayCommand Command_GridView_MouseDoubleDown
+        {
+            get
+            {
+                return _Command_GridView_MouseDoubleDown ??
+                       (_Command_GridView_MouseDoubleDown = new RelayCommand(() =>
+                       {
+                           MessageBox.Show(SelectedMarker.Id.ToString());
+                       }));
+            }
+        }
+
+
+        private RelayCommand<object> _Command_GridView_MouseDown;
+
+        public RelayCommand<object> CommandGridView_MouseDown
+        {
+            get
+            {
+                return _Command_GridView_MouseDown ??
+                       (_Command_GridView_MouseDown = new RelayCommand<object>((object e) =>
+                       {
+                           object[] objs = e as object[];
+                           if (objs.Length == 2 && objs[0] is ListViewItem && objs[1] is MouseButtonEventArgs)
+                           {
+                               Marker itemMarker = ((ListViewItem) objs[0]).Content as Marker;
+                               MouseButtonEventArgs btn = objs[1] as MouseButtonEventArgs;
+                               if (btn.ChangedButton == MouseButton.Right)
+                               {
+                                   
+                               }
+
+                           }
+                       }));
+            }
+        }

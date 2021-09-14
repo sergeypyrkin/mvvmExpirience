@@ -76,6 +76,9 @@
     </Compile>
     <Compile Include="Model\Marker.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Test\ITest.cs" />
+    <Compile Include="Test\test1.cs" />
+    <Compile Include="Test\test2.cs" />
     <Compile Include="ViewModel\GridViewViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TestViewModel.cs" />
